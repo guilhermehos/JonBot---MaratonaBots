@@ -25,11 +25,6 @@ namespace JonBot.Dialogs
             try
             {
                 var activity = await result as Activity;
-                //ConnectDB connect = new ConnectDB();
-                //await connect.CreateDocumentIfNotExists(ConfigurationManager.AppSettings["DatabaseName"], "Message", new MessageModel{ Id = activity.Id, Message = "oi", Name = "Guilherme", Status = "1"});
-                
-
-                //await connect.SaveMessage(ConfigurationManager.AppSettings["DatabaseName"], "Message", new MessageModel { Id = activity.Id, Message = activity.Text, Name = activity.Name, Status = "1" });
 
                 LuisModel luisModel = new LuisModel();
 

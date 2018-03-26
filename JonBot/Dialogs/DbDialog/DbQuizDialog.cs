@@ -9,15 +9,15 @@ namespace JonBot.Model
         {
             Points = 0;
             ConversationStatus = 0;
-            Answers1 = new string[] { "Spin", "Cobalt", "Classic", "Cruze", "Vectra" };
-            Answers2 = new string[] { "Mobi", "Linea", "Palio", "Siena", "Tipo" };
-            Answers3 = new string[] { "Corcel", "Fusca", "Del Rey", "Chevete", "Kombi" };
-            Answers4 = new string[] { "Volkswagen", "Volvo", "Mercedes-Benz", "BMW", "Opel" };
-            Answers5 = new string[] { "km/h", "kgf.m", "N.M", "RPM", "MPH" };
-            Answers6 = new string[] { "Ferrari Modena", "Nissan 350Z", "Porsche 911", "Audi R8", "Honda NSX" };
+            Answers1 = new string[] { "6", "24", "12", "8", "3" };
+            Answers2 = new string[] { "O homem que a viu", "A camisa do homem que era vermelha", "O dedo do homem que apontou para ela quando a viu", "Um vulto difuso, uma mancha, já que a toupeira é quase cega", "Nenhuma das respostas acima" };
+            Answers3 = new string[] { "Na África", "Na Oceania", "Às margens do Rio Negro", "Na Ásia", "Nas Américas" };
+            Answers4 = new string[] { "A velociade do som é igual a da luz", "Golfinhos são mamíferos", "Os passáros são invertebrados", "O mar vermelho fica na China", "O Brasil é o maior país do mundo" };
+            Answers5 = new string[] { "Supersônico", "Ultrasônico", "Hipersônico", "Sônico", "Teco teco" };
+            Answers6 = new string[] { "Na Mongólia", "No Japão", "Na Atlântida", "No Egito, pelos Judeus", "Na China" };
             Answers7 = new string[] { "Shelby Mustang", "Hummer H2", "Porsche 911", "Aston Martin DB5", "Audi R8" };
-            Answers8 = new string[] { "200 km", "150 km", "250 km", "300 km", "500 km" };
-            Answers9 = new string[] { "Gol", "Fiorino", "Classic", "Kombi", "Fusca" };
+            Answers8 = new string[] { "O Tiranossauro Rex", "O Tiranossauro do Rex", "O Mastodonte", "O Dinossauro Rex", "O Bocassauro" };
+            Answers9 = new string[] { "Leonardo da Vinci", "Sócrates", "Heródoto", "Homero", "Platão" };
             Answers10 = new string[] { "Agrale", "Cometa", "Busscar", "Scania", "Comil" };
             ConversationOption = new string[] { "Vamos conversar?", "Responder de novo" };
         }

@@ -1,4 +1,5 @@
-﻿using JonBot.Dialogs.EnumDialog;
+﻿using JonBot.Database;
+using JonBot.Dialogs.EnumDialog;
 using JonBot.Model;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
@@ -33,9 +34,10 @@ namespace JonBot.Dialogs
                     activity = context.Activity as Activity;
                 }
 
-                //_db.MessageRepository = new MessageRepository();
-
-                //await _db.MessageRepository.SaveMessage(activity);
+                ConnectDB connect = new ConnectDB();
+                await connect.CreateDocumentIfNotExists( "Message", activity);
+                
+                await connect.SaveMessage("Message", activity);
 
                 if (_db.ConversationStatus == (int)QuizEnum.Init)
                 {
@@ -94,9 +96,9 @@ namespace JonBot.Dialogs
 
         private async Task ConversationInit(Activity activity, IDialogContext context)
         {
-            await context.SendMessage(activity, "Vamos ver quanto você sabe sobre carros:");
+            await context.SendMessage(activity, "Então vamos jogar:");
 
-            await context.DoSuggestedActions("Qual carro foi criado pela Chevrolet para substituir o Astra?", _db.Answers1, QuizMessageReceivedAsync);
+            await context.DoSuggestedActions("A metade do dobro de uma dúzia é igual a:".Trim(), _db.Answers1, QuizMessageReceivedAsync);
 
             _db.Points = 0;
 
@@ -109,12 +111,12 @@ namespace JonBot.Dialogs
 
             if (_db.Answers1.Any(x => x.ToLower() == message))
             {
-                if (message == "cruze")
+                if (message == ("12").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
 
-                await context.DoSuggestedActions("Qual dos carros abaixo foi o último modelo da Fiat a ser criado?", _db.Answers2, QuizMessageReceivedAsync);
+                await context.DoSuggestedActions("Um homem viu uma toupeira. A toupeira, que também olhou para ele, viu o que?", _db.Answers2, QuizMessageReceivedAsync);
 
                 _db.ConversationStatus = (int)QuizEnum.Pergunta2;
             }
@@ -130,12 +132,12 @@ namespace JonBot.Dialogs
 
             if (_db.Answers2.Any(x => x.ToLower() == message))
             {
-                if (message == "mobi")
+                if (message == ("Nenhuma das respostas acima").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
 
-                await context.DoSuggestedActions("Qual o primeiro carro a ter um motor rodando com etanol?", _db.Answers3, QuizMessageReceivedAsync);
+                await context.DoSuggestedActions("O lago Vitória fica em que lugar?", _db.Answers3, QuizMessageReceivedAsync);
 
                 _db.ConversationStatus = (int)QuizEnum.Pergunta3;
             }
@@ -151,12 +153,12 @@ namespace JonBot.Dialogs
 
             if (_db.Answers3.Any(x => x.ToLower() == message))
             {
-                if (message == "corcel")
+                if (message == ("Na África").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
 
-                await context.DoSuggestedActions("Qual das marcas abaixo não é alemã?", _db.Answers4, QuizMessageReceivedAsync);
+                await context.DoSuggestedActions("Uma das respostas abaixo está CORRETA. Qual?", _db.Answers4, QuizMessageReceivedAsync);
 
                 _db.ConversationStatus = (int)QuizEnum.Pergunta4;
             }
@@ -172,12 +174,12 @@ namespace JonBot.Dialogs
 
             if (_db.Answers4.Any(x => x.ToLower() == message))
             {
-                if (message == "volvo")
+                if (message == ("Golfinhos são mamíferos").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
 
-                await context.DoSuggestedActions("Qual é a unidade utilizada para medir a velocidade de giro do motor?", _db.Answers5, QuizMessageReceivedAsync);
+                await context.DoSuggestedActions("O avião que ultrapassa a velocidade do som é:", _db.Answers5, QuizMessageReceivedAsync);
 
                 _db.ConversationStatus = (int)QuizEnum.Pergunta5;
             }
@@ -193,12 +195,12 @@ namespace JonBot.Dialogs
 
             if (_db.Answers5.Any(x => x.ToLower() == message))
             {
-                if (message == "rpm")
+                if (message == ("Supersônico").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
 
-                await context.DoSuggestedActions("Ayrton Senna ajudou a desenvolver o chassi e algumas outras partes para qual carro?", _db.Answers6, QuizMessageReceivedAsync);
+                await context.DoSuggestedActions("Em que lugar o Papel foi inventado há mais de 2000 anos atrás?", _db.Answers6, QuizMessageReceivedAsync);
 
                 _db.ConversationStatus = (int)QuizEnum.Pergunta6;
             }
@@ -214,7 +216,7 @@ namespace JonBot.Dialogs
 
             if (_db.Answers6.Any(x => x.ToLower() == message))
             {
-                if (message == "honda nsx")
+                if (message == ("Na China").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
@@ -235,11 +237,11 @@ namespace JonBot.Dialogs
 
             if (_db.Answers7.Any(x => x.ToLower() == message))
             {
-                if (message == "aston martin db5")
+                if (message == ("aston martin db5").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
-                await context.DoSuggestedActions("Que distância, no mínimo, um carro elétrico pode percorrer após ser carregado?", _db.Answers8, QuizMessageReceivedAsync);
+                await context.DoSuggestedActions("O Réptil predador pré-histórico mais feroz que existiu, foi:", _db.Answers8, QuizMessageReceivedAsync);
 
                 _db.ConversationStatus = (int)QuizEnum.Pergunta8;
             }
@@ -255,11 +257,11 @@ namespace JonBot.Dialogs
 
             if (_db.Answers8.Any(x => x.ToLower() == message))
             {
-                if (message == "150 km")
+                if (message == ("O Tiranossauro Rex").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
-                await context.DoSuggestedActions("Qual é o carro mais antigo em fabricação no Brasil?", _db.Answers9, QuizMessageReceivedAsync);
+                await context.DoSuggestedActions("Famoso pensador que primeiro escreveu sobre a existência da lendária Atlântida?", _db.Answers9, QuizMessageReceivedAsync);
 
                 _db.ConversationStatus = (int)QuizEnum.Pergunta9;
             }
@@ -275,11 +277,11 @@ namespace JonBot.Dialogs
 
             if (_db.Answers9.Any(x => x.ToLower() == message))
             {
-                if (message == "kombi")
+                if (message == ("Platão").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }
-                await context.DoSuggestedActions("Qual das montadoras abaixo é brasileira?", _db.Answers10, QuizMessageReceivedAsync);
+                await context.DoSuggestedActions("Qual das montadoras de automóveis abaixo é brasileira?", _db.Answers10, QuizMessageReceivedAsync);
 
                 _db.ConversationStatus = (int)QuizEnum.Pergunta10;
             }
@@ -295,7 +297,7 @@ namespace JonBot.Dialogs
 
             if (_db.Answers10.Any(x => x.ToLower() == message))
             {
-                if (message == "agrale")
+                if (message == ("agrale").Trim().ToLower())
                 {
                     _db.Points += 1;
                 }

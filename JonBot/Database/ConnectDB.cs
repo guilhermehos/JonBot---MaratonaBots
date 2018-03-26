@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using JonBot.Model;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
 
 namespace JonBot.Database
@@ -12,6 +13,7 @@ namespace JonBot.Database
     public class ConnectDB
     {
         private DocumentClient client;
+        string DatabaseName = ConfigurationManager.AppSettings["DatabaseName"];
 
         public ConnectDB()
         {
@@ -19,17 +21,17 @@ namespace JonBot.Database
             
         }
 
-        public async Task CreateDocumentIfNotExists(string databaseName, string collectionName, MessageModel message)
+        public async Task CreateDocumentIfNotExists(string collectionName, Activity activity)
         {
             try
             {
-                await this.client.ReadDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, message.Id));
+                await this.client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseName, collectionName, activity.Id));
             }
             catch (DocumentClientException de)
             {
                 if (de.StatusCode == HttpStatusCode.NotFound)
                 {
-                    await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), message);
+                    await this.client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(DatabaseName, collectionName), new MessageModel { Id = activity.Id, Message = activity.Text, Name = activity.Name, Status = "1" });
                 }
                 else
                 {
@@ -38,12 +40,17 @@ namespace JonBot.Database
             }
         }
 
-        public async Task SaveMessage(string databaseName, string collectionName, MessageModel message)
+        public async Task SaveMessage(string collectionName, Activity activity)
         {
             try
             {
-                await this.client.ReadDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, message.Id));
-                await this.client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(databaseName, collectionName, message.Id), message);
+                await this.client.ReadDocumentAsync(UriFactory.CreateDocumentUri(DatabaseName, collectionName, activity.Id));
+                MessageModel message = new MessageModel();
+                message.Id = activity.Id;
+                message.Message = activity.Text;
+                message.Name = activity.Name;
+                message.Status = "1";
+                await this.client.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(DatabaseName, collectionName, activity.Id), message);
 
             }
             catch (Exception ex)
